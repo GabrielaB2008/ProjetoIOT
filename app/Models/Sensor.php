@@ -21,7 +21,7 @@ class Sensor extends Model
         return $this->hasMany(Registro::class);
     }
 
-    public function ambientes()
+    public function ambiente()
     {
         return $this->belongsTo(Ambiente::class);
     }

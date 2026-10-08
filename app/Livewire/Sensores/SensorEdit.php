@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Livewire\Sensores;
+
+use App\Models\Ambiente;
+use App\Models\Sensor;
+use Livewire\Component;
+
+class SensorEdit extends Component
+{
+    public $sensor_id;
+    public $ambiente_id;
+    public $codigo;
+    public $tipo;
+    public $descricao;
+    public $status;
+
+    public function mount($id){
+        $sensor = Sensor::find($id);
+        if($sensor == null){
+            session()->flash('error', 'Sensor não encontrado');
+            return redirect()->route('sensor.index');
+    }
+
+    $this->sensor_id = $sensor->id;
+    $this->ambiente_id = $sensor->ambiente_id;
+    $this->codigo = $sensor->codigo;
+    $this->tipo = $sensor->tipo;
+    $this->descricao = $sensor->descricao;
+    $this->status = $sensor->status;
+
+    }
+
+    public function update(){
+        $sensor = Sensor::find($this->sensor_id);
+        if($sensor == null){
+            session()->flash('error', 'Sensor não encontrado');
+            return redirect()->route('sensor.index');
+    }
+
+        $sensor->ambiente_id = $this->ambiente_id;
+        $sensor->codigo = $this->codigo;
+        $sensor->tipo = $this->tipo;
+        $sensor->descricao = $this->descricao;
+        $sensor->status = $this->status;
+
+        $sensor->update();
+
+        session()->flash('success', 'Sensor Atualizado');
+        return redirect()->route('sensor.index');
+    }
+
+
+    public function render()
+    {
+        return view('livewire.sensores.sensor-edit');
+    }
+}
